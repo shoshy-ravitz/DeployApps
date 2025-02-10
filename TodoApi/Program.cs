@@ -43,9 +43,9 @@ if (app.Environment.IsDevelopment())
 }
 
 ///controller ////////
-// app.MapGet("/", () => "welcome");
+ app.MapGet("/", () => "welcome");
 // Route לשליפת כל המשימות
-app.MapGet("/", async (ToDoDbContex db) =>
+app.MapGet("/tasks", async (ToDoDbContex db) =>
 {
     return await db.Items.ToListAsync(); // מחזיר את כל המשימות
 });
