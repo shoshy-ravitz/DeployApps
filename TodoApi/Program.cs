@@ -11,7 +11,7 @@ builder.Services.AddSwaggerGen();
 
 // הזרקת ה-DbContext לשירותים
 builder.Services.AddDbContext<ToDoDbContex>(options =>
-    options.UseMySql("Server=localhost;Database=ToDoDB;User=root;Password=aA1795aA;",
+    options.UseMySql(builder.Configuration.GetConnectionString("ToDoDB"),
     Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.41-mysql")));
 
 //// cors /////////////
@@ -20,16 +20,17 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowAllOrigins",
         builder =>
         {
-            builder.AllowAnyOrigin() 
-                   .AllowAnyMethod() 
-                   .AllowAnyHeader(); 
+            builder.AllowAnyOrigin()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
         });
 });
 
 
+
 var app = builder.Build();
 
-app.UseCors("AllowAllOrigins"); 
+app.UseCors("AllowAllOrigins");
 
 
 if (app.Environment.IsDevelopment())
@@ -43,14 +44,14 @@ if (app.Environment.IsDevelopment())
 }
 
 ///controller ////////
- app.MapGet("/f", () => "welcome");
+app.MapGet("/f", () => "welcome");
 
 
 
 // Route לשליפת כל המשימות
 app.MapGet("/tasks", async (ToDoDbContex db) =>
 {
-    
+
     return await db.Items.ToListAsync(); // מחזיר את כל המשימות
 });
 
