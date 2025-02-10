@@ -27,11 +27,9 @@ builder.Services.AddCors(options =>
 });
 
 
-
 var app = builder.Build();
 
 app.UseCors("AllowAllOrigins");
-
 
 if (app.Environment.IsDevelopment())
 {
@@ -44,7 +42,7 @@ if (app.Environment.IsDevelopment())
 }
 
 ///controller ////////
-app.MapGet("/f", () => "welcome");
+app.MapGet("/", () => "welcome");
 
 
 
