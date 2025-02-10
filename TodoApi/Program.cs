@@ -46,19 +46,6 @@ if (app.Environment.IsDevelopment())
  app.MapGet("/", () => "welcome");
 
 
- app.MapPost("/tasks", async (ToDoDbContex db, Item newTask) =>
-{
-    try
-    {
-        db.Items.Add(newTask);
-        await db.SaveChangesAsync();
-        return Results.Created($"/tasks/{newTask.Id}", newTask); // מחזיר את המשימה שנוספה
-    }
-    catch (Exception ex)
-    {
-        return Results.Problem(ex.Message); // מחזיר את השגיאה
-    }
-});
 
 // Route לשליפת כל המשימות
 app.MapGet("/tasks", async (ToDoDbContex db) =>
@@ -67,13 +54,13 @@ app.MapGet("/tasks", async (ToDoDbContex db) =>
     return await db.Items.ToListAsync(); // מחזיר את כל המשימות
 });
 
-// // Route להוספת משימה חדשה
-// app.MapPost("/tasks", async (ToDoDbContex db, Item newTask) =>
-// {
-//     db.Items.Add(newTask);
-//     await db.SaveChangesAsync();
-//     return Results.Created($"/tasks/{newTask.Id}", newTask); // מחזיר את המשימה שנוספה
-// });
+// Route להוספת משימה חדשה
+app.MapPost("/tasks", async (ToDoDbContex db, Item newTask) =>
+{
+    db.Items.Add(newTask);
+    await db.SaveChangesAsync();
+    return Results.Created($"/tasks/{newTask.Id}", newTask); // מחזיר את המשימה שנוספה
+});
 
 // Route לעדכון משימה
 app.MapPut("/tasks/{id}", async (ToDoDbContex db, int id, Item updatedTask) =>
