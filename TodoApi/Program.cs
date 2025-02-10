@@ -43,7 +43,7 @@ if (app.Environment.IsDevelopment())
 }
 
 ///controller ////////
- app.MapGet("/", () => "welcome");
+ app.MapGet("/f", () => "welcome");
 
 
 
