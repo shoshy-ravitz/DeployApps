@@ -12,7 +12,8 @@ builder.Services.AddSwaggerGen();
 // הזרקת ה-DbContext לשירותים
 builder.Services.AddDbContext<ToDoDbContex>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("ToDoDB"),
-    Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.41-mysql")));
+    new MySqlServerVersion(new Version(8, 0, 41))));
+    // Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.41-mysql")));
 
 //// cors /////////////
 builder.Services.AddCors(options =>
@@ -67,7 +68,7 @@ app.MapPut("/tasks/{id}", async (ToDoDbContex db, int id, Item updatedTask) =>
     if (task is null) return Results.NotFound();
 
     task.Name = updatedTask.Name; // עדכון שם המשימה
-    task.IsComplet = updatedTask.IsComplet; // עדכון סטטוס ההשלמה
+    task.IsComplete = updatedTask.IsComplete; // עדכון סטטוס ההשלמה
     await db.SaveChangesAsync();
     return Results.NoContent(); // מחזיר תשובה ריקה
 });
